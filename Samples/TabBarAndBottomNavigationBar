@@ -1,0 +1,225 @@
+import 'package:flutter/material.dart';
+
+class MainProfile extends StatefulWidget {
+  @override
+  MainProfileState createState() => new MainProfileState();
+}
+
+class MainProfileState extends State<MainProfile> with SingleTickerProviderStateMixin {
+  int _currentIndex = 0;
+  VoidCallback onChanged;
+  TabController _controller;
+  String titleTabBar = "First";
+  Color colorTabBarAndBottomNavigationBar = Colors.teal;
+  List<ListMenuItemsProfile> listMenuItemsProfile = new List<ListMenuItemsProfile>();
+
+  @override
+  void initState() {
+    super.initState();
+
+    _controller = new TabController(initialIndex: 0, length: 5, vsync: this);
+    onChanged = () {
+      setState(() {
+        _currentIndex = this._controller.index;
+
+        updateColorTabBarAndBottomBar();
+      });
+    };
+    _controller.addListener(onChanged);
+  }
+
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+
+    listMenuItemsProfile = ListMenuItemsProfile().getMenuItemsList(context);
+  }
+
+  @override
+  void dispose() {
+    // Dispose of the Tab Controller
+    _controller.removeListener(onChanged);
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return new Scaffold(
+        // Set the AppBar as header
+        appBar: buildAppBar(),
+
+        // Set the TabBar view as the body of the Scaffold
+        body: buildTabBarView(),
+
+        // Set the bottom navigation bar
+        bottomNavigationBar: buildBottomNavigationBar()
+    );
+  }
+
+  //Build the AppBar
+  AppBar buildAppBar() {
+    return AppBar(
+      backgroundColor: colorTabBarAndBottomNavigationBar,
+//          leading: GestureDetector(
+//              child: Tab(
+//                  icon: GestureDetector(
+//                    child: Icon(Icons.menu),
+//                    onTap: () {
+//                      navigationToManuPage();
+//                    },
+//                  )),
+//              onTap: () {
+//                navigationToManuPage();
+//              },
+//            ),
+      bottom: TabBar(
+        indicatorColor: Colors.white,isScrollable: true,
+        controller: _controller,
+        unselectedLabelColor: Colors.white30,
+        tabs: [
+          buildTab(listMenuItemsProfile[0].index, listMenuItemsProfile[0].backgroundColor, listMenuItemsProfile[0].icon1, listMenuItemsProfile[0].icon2, listMenuItemsProfile[0].colorIcon1, listMenuItemsProfile[0].colorIcon2, listMenuItemsProfile[0].title),
+          buildTab(listMenuItemsProfile[1].index, listMenuItemsProfile[1].backgroundColor, listMenuItemsProfile[1].icon1, listMenuItemsProfile[1].icon2, listMenuItemsProfile[1].colorIcon1, listMenuItemsProfile[1].colorIcon2, listMenuItemsProfile[1].title),
+          buildTab(listMenuItemsProfile[2].index, listMenuItemsProfile[2].backgroundColor, listMenuItemsProfile[2].icon1, listMenuItemsProfile[2].icon2, listMenuItemsProfile[2].colorIcon1, listMenuItemsProfile[2].colorIcon2, listMenuItemsProfile[2].title),
+          buildTab(listMenuItemsProfile[3].index, listMenuItemsProfile[3].backgroundColor, listMenuItemsProfile[3].icon1, listMenuItemsProfile[3].icon2, listMenuItemsProfile[3].colorIcon1, listMenuItemsProfile[3].colorIcon2, listMenuItemsProfile[3].title),
+          buildTab(listMenuItemsProfile[4].index, listMenuItemsProfile[4].backgroundColor, listMenuItemsProfile[4].icon1, listMenuItemsProfile[4].icon2, listMenuItemsProfile[4].colorIcon1, listMenuItemsProfile[4].colorIcon2, listMenuItemsProfile[4].title),
+//          buildTab(0, Colors.teal, Icons.menu, Icons.restaurant_menu, Colors.white, Colors.white30, "First"),
+//          buildTab(1, Colors.deepPurple, Icons.person, Icons.person_add, Colors.white, Colors.white30, "Second"),
+//          buildTab(2, Colors.deepOrange, Icons.local_post_office, Icons.add, Colors.white, Colors.white30, "Third"),
+//          buildTab(3, Colors.blueAccent, Icons.camera, Icons.camera_alt, Colors.white, Colors.white30, "Fourth"),
+//          buildTab(4, Colors.redAccent, Icons.print, Icons.pregnant_woman, Colors.white, Colors.white30, "Fifth"),
+        ],
+      ),
+      title: Text(titleTabBar),
+    );
+  }
+
+  Tab buildTab(int index, Color backgroundColor, IconData icon1, IconData icon2, Color colorIcon1, Color colorIcon2, String title) {
+    if (_controller.index == index) {
+      titleTabBar = title;
+    }
+    return Tab(
+        icon: _currentIndex == index
+            ? Icon(
+                icon1,
+                color: colorIcon1,
+              )
+            : Icon(
+                icon2,
+                color: colorIcon2,
+              ));
+  }
+
+  //Build the TabBarView
+  TabBarView buildTabBarView() {
+    return new TabBarView(
+      // Add tabs as widgets
+      children: <Widget>[
+        Icon(Icons.menu),
+        Icon(Icons.person),
+        Icon(Icons.local_post_office),
+        Icon(Icons.camera),
+        Icon(Icons.print),
+      ],
+
+      // set the controller
+      controller: _controller,
+    );
+  }
+
+  //Build the BottomNavigationBar
+  BottomNavigationBar buildBottomNavigationBar() {
+
+
+
+    return BottomNavigationBar(
+      currentIndex: _currentIndex,
+      onTap: (int index) {
+        _controller.index = index;
+
+        updateColorTabBarAndBottomBar();
+      },
+      type: BottomNavigationBarType.shifting,
+      items: [
+        buildBottomNavigationBarItem(listMenuItemsProfile[0].index, listMenuItemsProfile[0].backgroundColor, listMenuItemsProfile[0].icon1, listMenuItemsProfile[0].icon2, listMenuItemsProfile[0].colorIcon1, listMenuItemsProfile[0].colorIcon2, listMenuItemsProfile[0].title),
+        buildBottomNavigationBarItem(listMenuItemsProfile[1].index, listMenuItemsProfile[1].backgroundColor, listMenuItemsProfile[1].icon1, listMenuItemsProfile[1].icon2, listMenuItemsProfile[1].colorIcon1, listMenuItemsProfile[1].colorIcon2, listMenuItemsProfile[1].title),
+        buildBottomNavigationBarItem(listMenuItemsProfile[2].index, listMenuItemsProfile[2].backgroundColor, listMenuItemsProfile[2].icon1, listMenuItemsProfile[2].icon2, listMenuItemsProfile[2].colorIcon1, listMenuItemsProfile[2].colorIcon2, listMenuItemsProfile[2].title),
+        buildBottomNavigationBarItem(listMenuItemsProfile[3].index, listMenuItemsProfile[3].backgroundColor, listMenuItemsProfile[3].icon1, listMenuItemsProfile[3].icon2, listMenuItemsProfile[3].colorIcon1, listMenuItemsProfile[3].colorIcon2, listMenuItemsProfile[3].title),
+        buildBottomNavigationBarItem(listMenuItemsProfile[4].index, listMenuItemsProfile[4].backgroundColor, listMenuItemsProfile[4].icon1, listMenuItemsProfile[4].icon2, listMenuItemsProfile[4].colorIcon1, listMenuItemsProfile[4].colorIcon2, listMenuItemsProfile[4].title),
+      ],
+    );
+  }
+
+  //Build Bottom NavigationBarItem
+  BottomNavigationBarItem buildBottomNavigationBarItem(int index, Color backgroundColor, IconData icon1, IconData icon2, Color colorIcon1, Color colorIcon2, String title) {
+    if (_controller.index == index) {
+      updateColorTabBarAndBottomBar();
+    }
+    return BottomNavigationBarItem(
+      backgroundColor: colorTabBarAndBottomNavigationBar,
+      icon: _currentIndex == index
+          ? Icon(
+              icon1,
+              color: colorIcon1,
+            )
+          : Icon(
+              icon2,
+              color: colorIcon2,
+            ),
+      title: Text(title),
+    );
+  }
+
+  Color updateColorTabBarAndBottomBar() {
+    setState(() {
+      switch (_controller.index) {
+        case 0:
+          colorTabBarAndBottomNavigationBar = Colors.teal;
+          break;
+        case 1:
+          colorTabBarAndBottomNavigationBar = Colors.deepPurple;
+          break;
+        case 2:
+          colorTabBarAndBottomNavigationBar = Colors.deepOrange;
+          break;
+        case 3:
+          colorTabBarAndBottomNavigationBar = Colors.blueAccent;
+          break;
+        case 4:
+          colorTabBarAndBottomNavigationBar = Colors.redAccent;
+          break;
+        default:
+          colorTabBarAndBottomNavigationBar = Colors.teal;
+          break;
+      }
+    });
+
+    return colorTabBarAndBottomNavigationBar;
+  }
+}
+
+class ListMenuItemsProfile {
+  int index;
+  Color backgroundColor;
+  IconData icon1;
+  IconData icon2;
+  Color colorIcon1;
+  Color colorIcon2;
+  String title;
+
+  ListMenuItemsProfile({this.index, this.backgroundColor, this.icon1, this.icon2, this.colorIcon1, this.colorIcon2, this.title});
+
+  List<ListMenuItemsProfile> getMenuItemsList(BuildContext context){
+
+    List<ListMenuItemsProfile> listMenuItems = new List<ListMenuItemsProfile>();
+
+    listMenuItems.add(new ListMenuItemsProfile(index: 0, backgroundColor: Colors.teal, icon1: Icons.menu, icon2: Icons.restaurant_menu, colorIcon1: Colors.white, colorIcon2: Colors.white30, title: "Menu"));
+    listMenuItems.add(new ListMenuItemsProfile(index: 1, backgroundColor: Colors.deepPurple, icon1: Icons.person, icon2: Icons.person_add, colorIcon1: Colors.white, colorIcon2: Colors.white30, title: "Second"));
+    listMenuItems.add(new ListMenuItemsProfile(index: 2, backgroundColor: Colors.deepOrange, icon1: Icons.local_post_office, icon2: Icons.add, colorIcon1: Colors.white, colorIcon2: Colors.white30, title: "Third"));
+    listMenuItems.add(new ListMenuItemsProfile(index: 3, backgroundColor: Colors.blueAccent, icon1: Icons.camera, icon2: Icons.camera_alt, colorIcon1: Colors.white, colorIcon2: Colors.white30, title: "Fourth"));
+    listMenuItems.add(new ListMenuItemsProfile(index: 4, backgroundColor: Colors.redAccent, icon1: Icons.print, icon2: Icons.print, colorIcon1: Colors.white, colorIcon2: Colors.white30, title: "Fifth"));
+
+    return listMenuItems;
+  }
+}	

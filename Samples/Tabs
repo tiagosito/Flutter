@@ -1,0 +1,235 @@
+///Copy from https://github.com/flutter/flutter/blob/master/examples/flutter_gallery/lib/demo/material/tabs_demo.dart
+
+
+
+const String _kGalleryAssetsPackage = 'assets/images';
+const String _kGalleryAssetsImagePrefix = 'assets/images/';
+
+class _Page {
+  _Page({ this.label });
+  final String label;
+  String get id => label[0];
+  @override
+  String toString() => '$runtimeType("$label")';
+}
+
+class _CardData {
+  const _CardData({ this.title, this.imageAsset, this.imageAssetPackage });
+  final String title;
+  final String imageAsset;
+  final String imageAssetPackage;
+}
+
+final Map<_Page, List<_CardData>> _allPages = <_Page, List<_CardData>>{
+  new _Page(label: 'HOME'): <_CardData>[
+    const _CardData(
+      title: 'Flatwear',
+      imageAsset: _kGalleryAssetsImagePrefix + 'background_galaxy_02.jpg',
+      imageAssetPackage: _kGalleryAssetsPackage,
+    ),
+    const _CardData(
+      title: 'Pine Table',
+      imageAsset: _kGalleryAssetsImagePrefix + 'iatec_logo.png',
+      imageAssetPackage: _kGalleryAssetsPackage,
+    ),
+    const _CardData(
+      title: 'Blue Cup',
+      imageAsset: _kGalleryAssetsImagePrefix + 'background_points_02.jpg',
+      imageAssetPackage: _kGalleryAssetsPackage,
+    ),
+    const _CardData(
+      title: 'Tea Set',
+      imageAsset: _kGalleryAssetsImagePrefix + 'background_blue_02.jpg',
+      imageAssetPackage: _kGalleryAssetsPackage,
+    ),
+  ],
+  new _Page(label: 'APPAREL'): <_CardData>[
+    const _CardData(
+      title: 'Blue Linen Napkins',
+      imageAsset: _kGalleryAssetsImagePrefix + 'background_colors_02.jpg',
+      imageAssetPackage: _kGalleryAssetsPackage,
+    ),
+    const _CardData(
+      title: 'Planters',
+      imageAsset: _kGalleryAssetsImagePrefix + 'background_dark_01.jpg',
+      imageAssetPackage: _kGalleryAssetsPackage,
+    ),
+    const _CardData(
+      title: 'Kitchen Quattro',
+      imageAsset: _kGalleryAssetsImagePrefix + 'background_points_01.jpg',
+      imageAssetPackage: _kGalleryAssetsPackage,
+    ),
+    const _CardData(
+      title: 'Platter',
+      imageAsset: _kGalleryAssetsImagePrefix + 'background_dark_03.jpg',
+      imageAssetPackage: _kGalleryAssetsPackage,
+    ),
+  ],
+  new _Page(label: 'NEW'): <_CardData>[
+    const _CardData(
+      title: 'Cloud-White Dress',
+      imageAsset: _kGalleryAssetsImagePrefix + 'background_dark_04.jpg',
+      imageAssetPackage: _kGalleryAssetsPackage,
+    ),
+    const _CardData(
+      title: 'Ginger Scarf',
+      imageAsset: _kGalleryAssetsImagePrefix + 'background_dark_05.jpg',
+      imageAssetPackage: _kGalleryAssetsPackage,
+    ),
+    const _CardData(
+      title: 'Blush Sweats',
+      imageAsset: _kGalleryAssetsImagePrefix + 'background_galaxy_01.jpg',
+      imageAssetPackage: _kGalleryAssetsPackage,
+    ),
+    const _CardData(
+      title: 'Desk Set',
+      imageAsset: _kGalleryAssetsImagePrefix + 'background_colors_01.jpg',
+      imageAssetPackage: _kGalleryAssetsPackage,
+    ),
+  ],
+  new _Page(label: 'LAST'): <_CardData>[
+    const _CardData(
+      title: 'Cloud-White Dress',
+      imageAsset: _kGalleryAssetsImagePrefix + 'background_hive_01.jpg',
+      imageAssetPackage: _kGalleryAssetsPackage,
+    ),
+    const _CardData(
+      title: 'Ginger Scarf',
+      imageAsset: _kGalleryAssetsImagePrefix + 'background_dark_05.jpg',
+      imageAssetPackage: _kGalleryAssetsPackage,
+    ),
+    const _CardData(
+      title: 'Blush Sweats',
+      imageAsset: _kGalleryAssetsImagePrefix + 'background_galaxy_01.jpg',
+      imageAssetPackage: _kGalleryAssetsPackage,
+    ),
+    const _CardData(
+      title: 'Desk Set',
+      imageAsset: _kGalleryAssetsImagePrefix + 'background_colors_01.jpg',
+      imageAssetPackage: _kGalleryAssetsPackage,
+    ),
+  ],
+};
+
+class _CardDataItem extends StatelessWidget {
+  const _CardDataItem({ this.page, this.data });
+
+  static const double height = 272.0;
+  final _Page page;
+  final _CardData data;
+
+  @override
+  Widget build(BuildContext context) {
+    return new Card(
+      child: new Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: new Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            new Align(
+              alignment: page.id == 'H'
+                  ? Alignment.centerLeft
+                  : page.id == "A"
+                  ? Alignment.center
+                  : Alignment.centerRight,
+              child: new CircleAvatar(child: new Text('${page.id}')),
+            ),
+            new SizedBox(
+              width: 144.0,
+              height: 144.0,
+              child: new Image.asset(
+                data.imageAsset,
+                //package: data.imageAssetPackage,
+                fit: BoxFit.contain,
+              ),
+            ),
+            new Center(
+              child: new Text(
+                data.title,
+                style: Theme.of(context).textTheme.title,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class TabsDemo extends StatelessWidget {
+  static const String routeName = '/material/tabs';
+
+  @override
+  Widget build(BuildContext context) {
+    return new DefaultTabController(
+      length: _allPages.length,
+      child: new Scaffold(
+        body: new NestedScrollView(
+          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+            return <Widget>[
+              new SliverOverlapAbsorber(
+                handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+                child: new SliverAppBar(
+                  title: const Text('Tabs and scrolling'),
+                  pinned: true,
+                  expandedHeight: 150.0,
+                  forceElevated: innerBoxIsScrolled,
+                  bottom: new TabBar(
+                    tabs: _allPages.keys.map(
+                          (_Page page) => new Tab(text: page.label),
+                    ).toList(),
+                  ),
+                ),
+              ),
+            ];
+          },
+          body: new TabBarView(
+            children: _allPages.keys.map((_Page page) {
+              return new SafeArea(
+                top: false,
+                bottom: false,
+                child: new Builder(
+                  builder: (BuildContext context) {
+                    return new CustomScrollView(
+                      key: new PageStorageKey<_Page>(page),
+                      slivers: <Widget>[
+                        new SliverOverlapInjector(
+                          handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+                        ),
+                        new SliverPadding(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 8.0,
+                            horizontal: 16.0,
+                          ),
+                          sliver: new SliverFixedExtentList(
+                            itemExtent: _CardDataItem.height,
+                            delegate: new SliverChildBuilderDelegate(
+                                  (BuildContext context, int index) {
+                                final _CardData data = _allPages[page][index];
+                                return new Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 8.0,
+                                  ),
+                                  child: new _CardDataItem(
+                                    page: page,
+                                    data: data,
+                                  ),
+                                );
+                              },
+                              childCount: _allPages[page].length,
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                ),
+              );
+            }).toList(),
+          ),
+        ),
+      ),
+    );
+  }
+}
