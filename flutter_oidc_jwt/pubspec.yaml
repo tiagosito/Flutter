@@ -1,0 +1,30 @@
+name: you_project
+description: Application for what you want.
+
+dependencies:
+  flutter:
+    sdk: flutter
+  http: "^0.11.3+17"
+  connectivity: '^0.3.1'
+  shared_preferences: '^0.4.2'
+  flutter_webview_plugin: '^0.2.1+2'
+  source_gen: '^0.9.0+1'
+  pointycastle:
+    git:
+      url: https://github.com/mraleph/pointycastle.git
+      ref: allow-RSASigner-without-registry
+  crypto: '^2.0.6'
+  logging: '^0.11.3+2'
+  flutter_localizations:
+    sdk: flutter
+
+dev_dependencies:
+  intl_translation: '^0.17.0'
+
+flutter:
+
+  uses-material-design: true
+
+
+environment:
+  sdk: ">=2.0.0-dev.28.0 <3.0.0"
