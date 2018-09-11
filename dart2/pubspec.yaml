@@ -1,0 +1,17 @@
+author: "Anders Holmgren<aholmgren@atlassian.com>"
+description: "An implementation of [JSON Web Token](http://tools.ietf.org/html/draft-ietf-oauth-json-web-token-19) standard"
+homepage: "https://bitbucket.org/aholmgren/dart_jwt"
+name: "dart_jwt"
+version: "0.6.0"
+dependencies:
+  pointycastle:
+    git:
+      url: https://github.com/mraleph/pointycastle.git
+      ref: allow-RSASigner-without-registry
+  crypto: ">=0.9.2+1 <3.0.0"
+  logging: ">=0.9.1+1 <0.12.0"
+dev_dependencies:
+  asn1lib: '>=0.5.0'
+  test: "^0.12.0"
+environment:
+  sdk: ">=1.16.0 <2.0.0"
