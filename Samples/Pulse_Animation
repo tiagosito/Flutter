@@ -37,7 +37,7 @@ class PulseAnimationState extends State<PulseAnimation> with SingleTickerProvide
     _controller.stop();
     _controller.reset();
     _controller.repeat(
-      period: Duration(milliseconds: 1000),
+      period: Duration(milliseconds: 1500),
     );
   }
 
