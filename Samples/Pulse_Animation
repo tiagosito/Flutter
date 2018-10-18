@@ -1,0 +1,107 @@
+import 'dart:math';
+import 'package:flutter/material.dart';
+
+class PulseAnimation extends StatefulWidget {
+  @override
+  PulseAnimationState createState() => new PulseAnimationState();
+}
+
+class PulseAnimationState extends State<PulseAnimation> with SingleTickerProviderStateMixin {
+  AnimationController _controller;
+
+  bool _isStarted;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = new AnimationController(
+      vsync: this,
+    );
+
+    _isStarted = false;
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  void _startAnimation() {
+
+    _isStarted = true;
+
+    _controller.stop();
+    _controller.reset();
+    _controller.repeat(
+      period: Duration(milliseconds: 1000),
+    );
+  }
+
+  void _stopAnimation() {
+
+    _isStarted = false;
+    _controller.stop();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return new Scaffold(
+      appBar: new AppBar(title: const Text('Start and Stop Pulse Animation'), backgroundColor: Colors.purple,),
+      body: Center(
+        child: new CustomPaint(
+          painter: new SpritePainter(_controller),
+          child: new SizedBox(
+            width: 200.0,
+            height: 200.0,child: Icon(Icons.favorite, size: 50.0, color: Colors.purple,),
+          ),
+        ),
+      ),
+      floatingActionButton: new FloatingActionButton(
+        backgroundColor: Colors.purple,
+        onPressed:(){ startOrStopAnimation();},
+        child: Center(child: new Icon(_isStarted ? Icons.pause : Icons.play_arrow, color: Colors.white,)),
+      ),
+    );
+  }
+
+  Function startOrStopAnimation(){
+    _isStarted == true ? _stopAnimation() : _startAnimation();
+    setState(() {
+
+    });
+  }
+}
+
+class SpritePainter extends CustomPainter {
+  final Animation<double> _animation;
+
+  SpritePainter(this._animation) : super(repaint: _animation);
+
+  void circle(Canvas canvas, Rect rect, double value) {
+    double opacity = (1.0 - (value / 5.0)).clamp(0.0, 0.15);
+    Color color = new Color.fromRGBO(128, 0, 128, opacity);
+
+    double plus = 100.0;
+    double size = rect.width / 2 + plus;
+    double area = size * size;
+    double radius = sqrt(area * value / 4);
+
+    final Paint paint = new Paint()..color = color;
+    canvas.drawCircle(rect.center, radius, paint);
+  }
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    Rect rect = new Rect.fromLTRB(0.0, 0.0, size.width, size.height);
+
+    for (int wave = 5; wave >= 0; wave--) {
+      circle(canvas, rect, wave + _animation.value);
+    }
+  }
+
+  @override
+  bool shouldRepaint(SpritePainter oldDelegate) {
+    return true;
+  }
+}
