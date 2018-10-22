@@ -1,3 +1,6 @@
+
+//Example from https://stackoverflow.com/questions/50739048/flutter-i-am-looking-for-a-way-to-do-a-pulse-animation/50748925
+
 import 'dart:math';
 import 'package:flutter/material.dart';
 
@@ -34,7 +37,7 @@ class PulseAnimationState extends State<PulseAnimation> with SingleTickerProvide
     _controller.stop();
     _controller.reset();
     _controller.repeat(
-      period: Duration(milliseconds: 1000),
+      period: Duration(milliseconds: 1500),
     );
   }
 
